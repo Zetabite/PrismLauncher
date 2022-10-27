@@ -42,6 +42,8 @@
 #include "ui/pages/BasePage.h"
 #include <Application.h>
 
+#include "loganalysis/IssueFinder.h"
+
 namespace Ui
 {
 class LogPage;
@@ -79,6 +81,7 @@ public:
 private slots:
     void on_btnPaste_clicked();
     void on_btnCopy_clicked();
+    void on_btnAnalyze_clicked();
     void on_btnClear_clicked();
     void on_btnBottom_clicked();
 
@@ -104,4 +107,5 @@ private:
 
     LogFormatProxyModel * m_proxy;
     shared_qobject_ptr <LogModel> m_model;
+    IssueFinder issue_finder;
 };

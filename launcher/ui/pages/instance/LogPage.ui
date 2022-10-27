@@ -28,13 +28,13 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tabLog">
       <attribute name="title">
-       <string notr="true">Tab 1</string>
+       <string notr="true">Log</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="gridLayout1">
        <item row="1" column="0" colspan="5">
-        <widget class="LogView" name="text">
+        <widget class="LogView" name="logText">
          <property name="undoRedoEnabled">
           <bool>false</bool>
          </property>
@@ -108,6 +108,16 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="btnAnalyze">
+           <property name="toolTip">
+            <string>Analyzes the log and then opens a dialog to list found errors and issues.</string>
+           </property>
+           <property name="text">
+            <string>Analyze</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="btnClear">
            <property name="toolTip">
             <string>Clear the log</string>
@@ -155,6 +165,32 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabIssueReport">
+      <attribute name="title">
+       <string notr="true">Issue Report</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout2">
+       <item row="1" column="0" colspan="5">
+        <widget class="IssueReportView" name="issueReportText">
+         <property name="undoRedoEnabled">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="plainText">
+          <string notr="true"/>
+         </property>
+         <property name="textInteractionFlags">
+          <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+         </property>
+         <property name="centerOnScroll">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+        </layout>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -165,6 +201,11 @@
    <extends>QPlainTextEdit</extends>
    <header>ui/widgets/LogView.h</header>
   </customwidget>
+  <customwidget>
+   <class>IssueReportView</class>
+   <extends>QPlainTextEdit</extends>
+   <header>ui/widgets/IssueReportView.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
@@ -172,8 +213,10 @@
   <tabstop>wrapCheckbox</tabstop>
   <tabstop>btnCopy</tabstop>
   <tabstop>btnPaste</tabstop>
+  <tabstop>btnAnalyze</tabstop>
   <tabstop>btnClear</tabstop>
-  <tabstop>text</tabstop>
+  <tabstop>logText</tabstop>
+  <tabstop>issueReportText</tabstop>
   <tabstop>searchBar</tabstop>
   <tabstop>findButton</tabstop>
  </tabstops>

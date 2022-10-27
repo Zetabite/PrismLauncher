@@ -87,6 +87,10 @@ set(CORE_SOURCES
     # Time
     MMCTime.h
     MMCTime.cpp
+
+    # Log Analysis
+    loganalysis/IssueFinder.h
+    loganalysis/IssueFinder.cpp
 )
 
 set(PATHMATCHER_SOURCES
@@ -835,6 +839,8 @@ SET(LAUNCHER_SOURCES
     ui/widgets/FocusLineEdit.h
     ui/widgets/IconLabel.cpp
     ui/widgets/IconLabel.h
+    ui/widgets/IssueReportView.cpp
+    ui/widgets/IssueReportView.h
     ui/widgets/JavaSettingsWidget.cpp
     ui/widgets/JavaSettingsWidget.h
     ui/widgets/LabeledToolButton.cpp

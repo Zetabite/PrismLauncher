@@ -151,13 +151,14 @@ LogPage::LogPage(InstancePtr instance, QWidget *parent)
     : QWidget(parent), ui(new Ui::LogPage), m_instance(instance)
 {
     ui->setupUi(this);
-    ui->tabWidget->tabBar()->hide();
+    //ui->tabWidget->tabBar()->hide();
+    //ui->tabIssueReport->hide();
 
     m_proxy = new LogFormatProxyModel(this);
     // set up text colors in the log proxy and adapt them to the current theme foreground and background
     {
-        auto origForeground = ui->text->palette().color(ui->text->foregroundRole());
-        auto origBackground = ui->text->palette().color(ui->text->backgroundRole());
+        auto origForeground = ui->logText->palette().color(ui->logText->foregroundRole());
+        auto origBackground = ui->logText->palette().color(ui->logText->backgroundRole());
         m_proxy->setColors(new LogColorCache(origForeground, origBackground));
     }
 
@@ -173,7 +174,7 @@ LogPage::LogPage(InstancePtr instance, QWidget *parent)
         m_proxy->setFont(QFont(fontFamily, fontSize));
     }
 
-    ui->text->setModel(m_proxy);
+    ui->logText->setModel(m_proxy);
 
     // set up instance and launch process recognition
     {
@@ -203,12 +204,12 @@ void LogPage::modelStateToUI()
 {
     if(m_model->wrapLines())
     {
-        ui->text->setWordWrap(true);
+        ui->logText->setWordWrap(true);
         ui->wrapCheckbox->setCheckState(Qt::Checked);
     }
     else
     {
-        ui->text->setWordWrap(false);
+        ui->logText->setWordWrap(false);
         ui->wrapCheckbox->setCheckState(Qt::Unchecked);
     }
     if(m_model->suspended())
@@ -310,6 +311,17 @@ void LogPage::on_btnCopy_clicked()
     GuiUtil::setClipboardText(m_model->toPlainText());
 }
 
+void LogPage::on_btnAnalyze_clicked()
+{
+    if(!m_model)
+        return;
+    m_model->append(MessageLevel::Launcher, QString("Analyzed log at: %1").arg(QDateTime::currentDateTime().toString(Qt::RFC2822Date)));
+    issue_finder.findIssues(m_model->toPlainText());
+    m_model->append(MessageLevel::Launcher, issue_finder.shortReport());
+    ui->issueReportText->setPlainText(issue_finder.fullReport());
+    //ui->tabIssueReport->show();
+}
+
 void LogPage::on_btnClear_clicked()
 {
     if(!m_model)
@@ -320,7 +332,7 @@ void LogPage::on_btnClear_clicked()
 
 void LogPage::on_btnBottom_clicked()
 {
-    ui->text->scrollToBottom();
+    ui->logText->scrollToBottom();
 }
 
 void LogPage::on_trackLogCheckbox_clicked(bool checked)
@@ -332,7 +344,7 @@ void LogPage::on_trackLogCheckbox_clicked(bool checked)
 
 void LogPage::on_wrapCheckbox_clicked(bool checked)
 {
-    ui->text->setWordWrap(checked);
+    ui->logText->setWordWrap(checked);
     if(!m_model)
         return;
     m_model->setLineWrap(checked);
@@ -342,17 +354,17 @@ void LogPage::on_findButton_clicked()
 {
     auto modifiers = QApplication::keyboardModifiers();
     bool reverse = modifiers & Qt::ShiftModifier;
-    ui->text->findNext(ui->searchBar->text(), reverse);
+    ui->logText->findNext(ui->searchBar->text(), reverse);
 }
 
 void LogPage::findNextActivated()
 {
-    ui->text->findNext(ui->searchBar->text(), false);
+    ui->logText->findNext(ui->searchBar->text(), false);
 }
 
 void LogPage::findPreviousActivated()
 {
-    ui->text->findNext(ui->searchBar->text(), true);
+    ui->logText->findNext(ui->searchBar->text(), true);
 }
 
 void LogPage::findActivated()
